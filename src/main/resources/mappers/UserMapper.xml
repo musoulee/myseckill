@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.musoulee.myseckill.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.musoulee.myseckill.entity.User">
+        <id column="id" jdbcType="CHAR" property="id"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="password" jdbcType="CHAR" property="password"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , phone, password, nickname, gender, age
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where id = #{id,jdbcType=CHAR}
+    </select>
+    <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where phone=#{phone,jdbcType=CHAR}
+        and password=#{password,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from user_info
+        where id = #{id,jdbcType=CHAR}
+    </delete>
+    <insert id="insert" parameterType="com.musoulee.myseckill.entity.User">
+        insert into user_info (id, phone, password, nickname,
+                               gender, age)
+        values (#{id,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{password,jdbcType=CHAR}, #{nickname,jdbcType=VARCHAR},
+                #{gender,jdbcType=TINYINT}, #{age,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.musoulee.myseckill.entity.User">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=CHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=CHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=CHAR},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.musoulee.myseckill.entity.User">
+        update user_info
+        <set>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=CHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=CHAR},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.musoulee.myseckill.entity.User">
+        update user_info
+        set phone    = #{phone,jdbcType=CHAR},
+            password = #{password,jdbcType=CHAR},
+            nickname = #{nickname,jdbcType=VARCHAR},
+            gender   = #{gender,jdbcType=TINYINT},
+            age      = #{age,jdbcType=INTEGER}
+        where id = #{id,jdbcType=CHAR}
+    </update>
+</mapper>
