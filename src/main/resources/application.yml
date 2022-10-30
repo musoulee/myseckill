@@ -18,3 +18,10 @@ spring:
     password: passroot
 mybatis:
   mapper-locations: classpath:mappers/*.xml
+#  configuration:
+    # 打印sql语句的执行过程
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: seckill

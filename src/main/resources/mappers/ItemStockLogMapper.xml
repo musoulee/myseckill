@@ -20,7 +20,7 @@
     delete from item_stock_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.musoulee.myseckill.entity.ItemStockLog">
+  <insert id="insert" parameterType="com.musoulee.myseckill.entity.ItemStockLog" keyProperty="id">
     insert into item_stock_log (id, item_id, amount, 
       status)
     values (#{id,jdbcType=INTEGER}, #{itemId,jdbcType=CHAR}, #{amount,jdbcType=INTEGER}, 

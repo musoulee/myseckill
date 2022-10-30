@@ -20,6 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/item")
+@CrossOrigin(origins = "${myseckill.web.path}", allowedHeaders = "*", allowCredentials = "true")
 public class ItemController {
     @Autowired
     private ItemService itemService;
@@ -43,9 +44,10 @@ public class ItemController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(path = "/list/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/detail/{id}", method = RequestMethod.GET)
     public ResponseModel getDetail(@PathVariable("id") String id) {
-        Item item = itemService.getDetailByID(id);
+        Item item = itemService.getDetailInCache(id);
+//        Item item = itemService.getDetailByID(id);
         if (item == null) {
             return ResponseModel.createFailure(CommonErrorEnum.STOCK_NOT_EXISTS);
         }

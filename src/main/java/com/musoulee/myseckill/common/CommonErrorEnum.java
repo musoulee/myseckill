@@ -25,6 +25,9 @@ public enum CommonErrorEnum implements CommonError {
     STOCK_NOT_EXISTS("202", "该商品不存在"),
     ITEM_ADD_FAIL("203", "商品添加失败"),
     PROMOTION_ADD_FAIL("204", "活动添加失败"),
+    // 300 订单错误
+    CREATE_ORDER_FAIL("301", "下单失败"),
+    SERVER_BUSY("302", "服务器繁忙，请稍后再试"),
     ;
     private String code;
     private String message;

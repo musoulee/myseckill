@@ -70,7 +70,7 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public ResponseModel register(String otp,@RequestBody @Validated User user) {
+    public ResponseModel register(String otp, @RequestBody @Validated User user) {
         String realOtp = (String) redisTemplate.opsForValue().get(user.getPhone());
         if (StringUtils.isEmpty(realOtp)) {
             throw new BusinessException(CommonErrorEnum.PARAMETER_ERROR, "验证码已过期！");
@@ -96,8 +96,8 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseModel login(@RequestParam("phone") @NotEmpty (message = "手机号不能为空") String phone,
-                               @RequestParam("password") @NotEmpty (message = "密码不能为空") String password) {
+    public ResponseModel login(@RequestParam("phone") @NotEmpty(message = "手机号不能为空") String phone,
+                               @RequestParam("password") @NotEmpty(message = "密码不能为空") String password) {
 //        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(password)) {
 //            throw new BusinessException(CommonErrorEnum.PARAMETER_ERROR, "用户名或密码不能为空!");
 //        }
@@ -109,7 +109,36 @@ public class UserController {
 //        logger.info("登录成功！");
         // 这里需要生成一个token放入Redis，以便保存用户的登录状态，并设置token7天过期
         String token = ToolBox.getRandomUUID();
-        redisTemplate.opsForValue().set(token, user.getId(), 7, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(token, user, 7, TimeUnit.DAYS);
+        return ResponseModel.createSuccess(token);
+    }
+
+    /**
+     * 查看用户状态
+     *
+     * @param token 用户登录凭证
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/status")
+    public ResponseModel getUser(String token) {
+        User user = (User) redisTemplate.opsForValue().get(token);
+        if (user == null) {
+            throw new BusinessException(CommonErrorEnum.USER_NOT_LOGIN);
+        }
+        return ResponseModel.createSuccess(user);
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param token
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/logout")
+    public ResponseModel logout(@NotEmpty String token) {
+        redisTemplate.delete(token);
         return ResponseModel.create();
     }
 

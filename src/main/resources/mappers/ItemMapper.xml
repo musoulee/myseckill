@@ -25,7 +25,7 @@
         from item
         where exists(
         select 1 from promotion
-        where item_id = id
+        where item_id = item.id
         and start_time &lt;= CURRENT_TIMESTAMP and end_time &gt;= CURRENT_TIMESTAMP
         )
     </select>

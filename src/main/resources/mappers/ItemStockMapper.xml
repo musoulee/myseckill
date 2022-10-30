@@ -16,7 +16,7 @@
         from item_stock
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectByItemId" resultType="com.musoulee.myseckill.entity.ItemStock" parameterType="java.lang.String">
+    <select id="selectByItemId" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"></include>
         from item_stock
